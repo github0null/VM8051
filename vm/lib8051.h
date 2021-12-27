@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 #include "lib8051defs.h"
 
@@ -40,9 +41,10 @@ struct vm8051
 
 extern size_t inst8051 (struct vm8051 *vm, uint8_t *inst, uint16_t addr);
 extern void reset8051 (struct vm8051 *vm);
-extern void fetch8051 (struct vm8051 *vm);
+extern bool fetch8051 (struct vm8051 *vm);
 extern void operate8051 (struct vm8051 *vm);
 extern void sim8051 (struct vm8051 *vm, uint16_t address, unsigned int ncy);
+extern bool step8051 (struct vm8051 *vm);
 
 extern int32_t get_timer0 (struct vm8051 *vm);
 extern int32_t get_timer1 (struct vm8051 *vm);

@@ -20,7 +20,7 @@
 #include <assert.h>
 
 #include "lib8051.h"
-#include "lib8051coprocessors.h"
+#include "lib8051hooks.h"
 
 /* simulate global variables for a struct vm8051 *vm */
 #include "lib8051globals.h"
@@ -34,7 +34,7 @@ struct copro8051
 };
 
 /* registers a coprocessor to the vm */
-void add_coprocessor (struct vm8051 *vm, void *contents, unsigned int index)
+void add_hook (struct vm8051 *vm, void *contents, unsigned int index)
 {
   struct copro8051 *copros;
 
@@ -53,40 +53,40 @@ void add_coprocessor (struct vm8051 *vm, void *contents, unsigned int index)
 }
 
 /* this table will store all available operate functions */
-void (*operate_copro_table[8]) (struct vm8051 *, void *);
+void (*operate_hook_list[8]) (struct vm8051 *, void *);
 
 /* call the operate function of all available coprocessors */
-void operate_coprocessors (struct vm8051 *vm)
+void operate_hooks (struct vm8051 *vm)
 {
   struct copro8051 *copros;
 
   copros = vm->coprocessors;
   while (copros)
     {
-      assert (operate_copro_table[copros->index] != NULL);
-      operate_copro_table[copros->index] (vm, copros->contents);
+      assert (operate_hook_list[copros->index] != NULL);
+      operate_hook_list[copros->index] (vm, copros->contents);
       copros = copros->next;
     }
 }
 
 /* this table will store all available print functions */
-void (*print_copro_table[8]) (struct vm8051 *, void *);
+void (*print_hook_list[8]) (struct vm8051 *, void *);
 
 /* call the operate function of all available coprocessors */
-void print_coprocessors (struct vm8051 *vm)
+void print_hooks (struct vm8051 *vm)
 {
   struct copro8051 *copros;
 
   copros = vm->coprocessors;
   while (copros)
     {
-      assert (print_copro_table[copros->index] != NULL);
-      print_copro_table[copros->index] (vm, copros->contents);
+      assert (print_hook_list[copros->index] != NULL);
+      print_hook_list[copros->index] (vm, copros->contents);
       copros = copros->next;
     }
 }
 
-void free_coprocessors (struct vm8051 *vm)
+void free_hooks (struct vm8051 *vm)
 {
   struct copro8051 *copros;
 

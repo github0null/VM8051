@@ -40,7 +40,7 @@ static void fprint_line (FILE *stream, uint16_t nb, int i, uint8_t *line)
 
 static uint8_t get_nibble (char c)
 {
-  uint8_t nibble;
+  uint8_t nibble = 0;
   if (('0' <= c) && (c <= '9'))
     nibble = c - '0';
   else if (('A' <= c) && (c <= 'F'))

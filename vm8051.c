@@ -23,7 +23,7 @@
 #include <string.h>
 
 #include <vm/lib8051.h>
-#include <vm/lib8051coprocessors.h>
+#include <vm/lib8051hooks.h>
 #include <copros/copro_RNG.h>
 #include <print/lib8051print.h>
 #include <utils/libhexbin.h>
@@ -362,7 +362,7 @@ static void dump8051 (struct vm8051 *vm, int minimal)
       printf ("\n");
     }
 #ifndef PURE_8051
-  print_coprocessors (vm);
+  print_hooks (vm);
 #endif
   printf ("----------------------------------------"
           "----------------------------------------\n");
@@ -836,7 +836,7 @@ int main (int argc, char *argv[])
     fprintf (stderr, "%s: empty program\n", argv[1]);
 
 #ifndef PURE_8051
-  free_coprocessors (vm);
+  free_hooks (vm);
 #endif
 
   free (vm);

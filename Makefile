@@ -3,10 +3,15 @@ CPPFLAGS = -D_POSIX_SOURCE -I.
 CFLAGS = -Wall -Wextra -Wmissing-declarations -fPIC -std=c99 -pedantic -O3
 LDFLAGS = -s -L.
 
-PREFIX ?= /usr/local
+PREFIX ?= ./dist
 
 LIBS = lib8051.a lib8051.so
 EXE = vm8051
+WIN32 = y
+
+ifdef WIN32
+	EXE_SUFFIX ?= .exe
+endif
 
 TARGETS = $(LIBS) $(EXE)
 
@@ -33,9 +38,9 @@ all: $(TARGETS)
 
 install: $(TARGETS)
 	mkdir -p $(PREFIX)/lib $(PREFIX)/include $(PREFIX)/bin
-	cp $(LIBS) $(PREFIX)/lib
-	cp $(HEADERS) $(PREFIX)/include
-	cp $(EXE) $(PREFIX)/bin
+	cp $(LIBS) "$(PREFIX)/lib"
+	cp $(HEADERS) "$(PREFIX)/include"
+	cp $(EXE)$(EXE_SUFFIX) "$(PREFIX)/bin"
 
 uninstall:
 	rm -f $(foreach LIB, $(LIBS), $(PREFIX)/lib/$(LIB))

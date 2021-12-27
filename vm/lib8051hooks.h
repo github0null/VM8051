@@ -15,21 +15,20 @@
    You should have received a copy of the GNU Lesser General Public License
    along with VM8051.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef LIB8051COPROCESSORS_H
-#define LIB8051COPROCESSORS_H
+#ifndef LIB8051HOOKS_H
+#define LIB8051HOOKS_H
 
 #include <stdio.h>
 #include <stdint.h>
 
 #include "lib8051.h"
 
-extern void (*operate_copro_table[8]) (struct vm8051 *vm, void *copro);
-extern void (*print_copro_table[8]) (struct vm8051 *vm, void *copro);
+extern void (*operate_hook_list[8]) (struct vm8051 *vm, void *copro);
+extern void (*print_hook_list[8]) (struct vm8051 *vm, void *copro);
 
-extern void add_coprocessor (struct vm8051 *vm,
-                             void *contents, unsigned int index);
-extern void operate_coprocessors (struct vm8051 *vm);
-extern void print_coprocessors (struct vm8051 *vm);
-extern void free_coprocessors (struct vm8051 *vm);
+extern void add_hook (struct vm8051 *vm, void *contents, unsigned int index);
+extern void operate_hooks (struct vm8051 *vm);
+extern void print_hooks (struct vm8051 *vm);
+extern void free_hooks (struct vm8051 *vm);
 
-#endif  /* LIB8051COPROCESSORS_H */
+#endif  /* LIB8051HOOKS_H */

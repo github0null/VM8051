@@ -25,9 +25,9 @@
 #include "lib8051globals.h"
 
 #ifndef PURE_8051
-extern void operate_coprocessors (struct vm8051 *vm);
+extern void operate_hooks (struct vm8051 *vm);
 #else
-#define operate_coprocessors(vm)
+#define operate_hooks(vm)
 #endif
 
 #define GO_ISR(I,E,P) ((E) && (I) && (!interrupted || (P)))
@@ -165,10 +165,12 @@ size_t inst8051 (struct vm8051 *vm, uint8_t *inst, uint16_t addr)
   return inst_len;
 }
 
-/* fetch the next instruction */
-void fetch8051 (struct vm8051 *vm)
+/* fetch the next instruction, if return false, program exited ! */
+bool fetch8051 (struct vm8051 *vm)
 {
-  PC += inst8051 (vm, IR, PC);
+  size_t inst_len = inst8051 (vm, IR, PC);
+  PC += inst_len;
+  return inst_len > 0;
 }
 
 /* reset the virtual machine in vm with the code in progname */
@@ -594,7 +596,7 @@ void operate8051 (struct vm8051 *vm)
     }
 
   /* ask the coprocessors to do their thing */
-  operate_coprocessors (vm);
+  operate_hooks (vm);
 
   /* timer(s) increment */
   if (TR0)
@@ -731,4 +733,14 @@ void sim8051 (struct vm8051 *vm, uint16_t address, unsigned int ncy)
       operate8051 (vm);
     }
   while (PC != address && cycles < ncy);
+}
+
+// step execute one 8051 instruction, 
+// if true, run ok, if false, program exited or error
+bool step8051 (struct vm8051 *vm) 
+{
+  if (!fetch8051 (vm)) 
+    return false;
+  operate8051 (vm);
+  return true;
 }

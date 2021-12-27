@@ -20,7 +20,7 @@
 #include <time.h>
 
 #include <vm/lib8051.h>
-#include <vm/lib8051coprocessors.h>
+#include <vm/lib8051hooks.h>
 
 #include "copro_RNG.h"
 
@@ -88,7 +88,7 @@ void add_copro_RNG (struct vm8051 *vm)
   rng = malloc (sizeof (struct copro_RNG));
   rng->cycles_start = 0;
 
-  operate_copro_table[RNG_INDEX] = &operate_copro_RNG;
-  print_copro_table[RNG_INDEX] = &print_copro_RNG;
-  add_coprocessor (vm, rng, RNG_INDEX);
+  operate_hook_list[RNG_INDEX] = &operate_copro_RNG;
+  print_hook_list[RNG_INDEX] = &print_copro_RNG;
+  add_hook (vm, rng, RNG_INDEX);
 }

@@ -1,0 +1,9 @@
+# vsc
+.vscode
+
+# bin file
+dist
+*.o
+*.a
+*.so
+*.exe
