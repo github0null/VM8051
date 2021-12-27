@@ -27,7 +27,7 @@
 /* 8051 virtual machine */
 struct vm8051
 {
-  uint32_t cycles;
+  uint32_t cycles;            // current instruction cycle totals
   uint8_t _data[256];
   uint8_t _sfr[128];
   uint8_t _xdata[65536];
@@ -35,8 +35,8 @@ struct vm8051
   uint8_t IR[4];
   uint16_t PC;
   uint8_t interrupted;
-  uint8_t interrupts_blocked;
-  void *coprocessors; /* to extend 8051 with coprocessors */
+  uint8_t interrupts_blocked; // in handling interrupt
+  void *coprocessors;         /* to extend 8051 with coprocessors */
 };
 
 extern size_t inst8051 (struct vm8051 *vm, uint8_t *inst, uint16_t addr);
